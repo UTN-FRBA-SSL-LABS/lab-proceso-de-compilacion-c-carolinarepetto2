@@ -504,7 +504,7 @@ grep -n "stdio.h" programa.i | head -5
 
 ¿Qué información comunican esas líneas `# N "archivo"`? ¿De qué archivo proviene el bloque que contiene la declaración de `printf`?
 
-> **R:**
+> **R:** esas lineas comunican de que archivo original proviene el codigo. Proviene de c:\\mingw\\include\\stdio.h" 3
 
 ---
 
@@ -660,26 +660,38 @@ Aparecen como instrucciones de llamada (por ejemplo `bl _area_circulo`), pero **
 
 **P7.** Ejecutá `grep "area_circulo" programa.s` y copiá la salida.
 
-> **R:**
+> **R:**  .ascii "area_circulo(%.1f) = %.4f\12\0"
+        call    _area_circulo
+        .def    _area_circulo;  .scl    2;      .type   32;     .endef
 
 ¿`area_circulo` aparece como una función *definida* en `programa.s`
 (con su propio bloque de instrucciones) o solo como una *llamada* (instrucción sin cuerpo)?
 Respondé DEFINIDA o LLAMADA:
 
 <!-- Completá con DEFINIDA o LLAMADA: -->
-AREA_EN_S=
+AREA_EN_S=LLAMADA
 
 ---
 
 **P8.** Encontrá en `programa.s` la etiqueta `sumar:` o `_sumar:` y copiá
 las primeras 4 líneas de instrucciones que le siguen.
 
-> **R:**
+> **R:** grep -n "sumar" programa.s
+8:      .globl  _sumar
+9:      .def    _sumar; .scl    2;      .type   32;     .endef
+10:_sumar:
+38:     .ascii "sumar(3, 4)       = %d\12\0"
+50:     .ascii "Llamadas a sumar(): %d\12\0" 
+$ grep -n "_sumar" programa.s 
+8:      .globl  _sumar
+9:      .def    _sumar; .scl    2;      .type   32;     .endef
+10:_sumar:
+72:     call    _sumar
 
 Explicá en términos generales qué hacen esas instrucciones
 (usá los comentarios del laboratorio como guía):
 
-> **R:**
+> **R:** .global declara la funcion como global y puede ser usada desde otros archivos; def describe la funcion; call llama a la funcion; ascii define un string en memoria
 
 ---
 
